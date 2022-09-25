@@ -1,4 +1,3 @@
-from dataclasses import field
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -19,14 +18,23 @@ class FieldType(models.TextChoices):
                 return 'listValue'
 
 
-class FormTemplate(models.Model):
+class validateOnSaveModel(models.Model):
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
+
+
+class FormTemplate(validateOnSaveModel):
     name = models.CharField(max_length=80)
 
     def __str__(self) -> str:
         return f'{self.name}'
 
 
-class FormField(models.Model):
+class FormField(validateOnSaveModel):
     name = models.CharField(max_length=80)
     fieldType = models.CharField(max_length=2, choices=FieldType.choices)
     formTemplate = models.ForeignKey(
@@ -36,7 +44,7 @@ class FormField(models.Model):
         return f'{self.formTemplate}.{self.name}({self.fieldType})'
 
 
-class ListValue(models.Model):
+class ListValue(validateOnSaveModel):
     formField = models.ForeignKey(
         FormField,  on_delete=models.CASCADE, related_name='values')
     value = models.CharField(max_length=30)
@@ -45,7 +53,7 @@ class ListValue(models.Model):
         return f'{self.value}'
 
 
-class Form(models.Model):
+class Form(validateOnSaveModel):
     template = models.ForeignKey(
         FormTemplate,
         on_delete=models.CASCADE,
@@ -55,7 +63,7 @@ class Form(models.Model):
         return f'{self.template}.{self.id}'
 
 
-class FormFieldValue(models.Model):
+class FormFieldValue(validateOnSaveModel):
     form = models.ForeignKey(
         Form, on_delete=models.CASCADE,  related_name='values')
     formField = models.ForeignKey(FormField,  on_delete=models.CASCADE)
