@@ -123,6 +123,7 @@ export default function TemplateForm(props) {
           invalid={Boolean(errors.name)}
           type="text"
           name="name"
+          id="name"
           maxLength="80"
           onChange={nameOnChange}
           value={defaultIfEmpty(state.name)}

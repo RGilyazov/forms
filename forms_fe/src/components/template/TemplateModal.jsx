@@ -6,7 +6,7 @@ export default function TemplateModal(props) {
   const [state, setState] = useState({
     modal: false,
   });
-
+  console.log(props);
   const toggle = () => {
     setState((previous) => ({
       modal: !previous.modal,

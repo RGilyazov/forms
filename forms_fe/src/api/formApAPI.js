@@ -29,3 +29,5 @@ export function getForms() {
 export function postForm(form) {
   return axios.post(FORM_API_URL, form);
 }
+
+export const EXPORT_FOR_TESTING = { TEMPLATE_API_URL, FORM_API_URL };
