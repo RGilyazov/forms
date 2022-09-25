@@ -64,7 +64,7 @@ test("put template data", async () => {
   const resetState = jest.fn();
   const formTemplateData = {
     pk: 12,
-    name: "STRING",
+    name: "<template name>",
     fields: [
       {
         pk: 20,
@@ -86,9 +86,7 @@ test("put template data", async () => {
   expect(button).toBeInTheDocument();
   fireEvent.click(button);
   let input = await screen.findByLabelText("Name:");
-  expect(input.value).toBe("STRING");
-  const label = screen.queryByText("Editing template <STRING>");
-  expect(label).toBeInTheDocument();
+  expect(input.value).toBe("<template name>");
   const saveButton = screen.getByText("Save");
   expect(saveButton).toBeInTheDocument();
   axios.put.mockImplementationOnce(() => Promise.resolve({}));
