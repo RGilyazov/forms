@@ -1,4 +1,6 @@
+from dataclasses import field
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class FieldType(models.TextChoices):
@@ -27,11 +29,11 @@ class FormTemplate(models.Model):
 class FormField(models.Model):
     name = models.CharField(max_length=80)
     fieldType = models.CharField(max_length=2, choices=FieldType.choices)
-    FormTemplate = models.ForeignKey(
-        FormTemplate,  on_delete=models.CASCADE, related_name='fields', blank=False, null=True)
+    formTemplate = models.ForeignKey(
+        FormTemplate,  on_delete=models.CASCADE, related_name='fields')
 
     def __str__(self) -> str:
-        return f'{self.FormTemplate}.{self.name}({self.fieldType})'
+        return f'{self.formTemplate}.{self.name}({self.fieldType})'
 
 
 class ListValue(models.Model):
@@ -47,7 +49,7 @@ class Form(models.Model):
     template = models.ForeignKey(
         FormTemplate,
         on_delete=models.CASCADE,
-        related_name='forms', blank=False, null=True)
+        related_name='forms')
 
     def __str__(self) -> str:
         return f'{self.template}.{self.id}'
@@ -55,7 +57,7 @@ class Form(models.Model):
 
 class FormFieldValue(models.Model):
     form = models.ForeignKey(
-        Form, on_delete=models.CASCADE, blank=False, null=True, related_name='values')
+        Form, on_delete=models.CASCADE,  related_name='values')
     formField = models.ForeignKey(FormField,  on_delete=models.CASCADE)
     stringValue = models.CharField(max_length=50, blank=True, null=True)
     numberValue = models.FloatField(blank=True, null=True)
@@ -71,4 +73,21 @@ class FormFieldValue(models.Model):
             return ''
 
     def __str__(self) -> str:
-        return f'{self.form.template.name}.{self.formField.name}.form_{self.form.template.id}={self.getValue()}'
+        return f'{self.form.template.name}.{self.formField.name}.form_{self.form.template.id}={self.valueAsString}'
+
+    def clean(self):
+        fieldType = self.formField.fieldType
+        for choice in FieldType:
+            fieldName = FieldType.getFieldName(choice)
+            if choice != self.formField.fieldType and getattr(self, fieldName) != None:
+                raise ValidationError(
+                    {fieldName: f"{fieldName} should be Null for field with type {fieldType}"})
+        match fieldType:
+            case FieldType.LIST:
+                if self.listValue != None and self.formField != self.listValue.formField:
+                    raise ValidationError(
+                        {'listValue': "listValue should belong to formField"})
+            case FieldType.STRING:
+                if self.stringValue == None or len(self.stringValue) < 1:
+                    raise ValidationError(
+                        {'stringValue': "value length should be at least 1"})

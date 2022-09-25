@@ -103,6 +103,7 @@ export default function TemplateForm(props) {
         <Input
           type="text"
           name="name"
+          maxLength="80"
           onChange={nameOnChange}
           value={defaultIfEmpty(state.name)}
         />

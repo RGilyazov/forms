@@ -4,6 +4,8 @@ from drf_writable_nested import WritableNestedModelSerializer
 
 
 class ListValueSerializer(serializers.ModelSerializer):
+    formField = serializers.IntegerField(source='formField.id', required=False)
+
     class Meta:
         model = ListValue
         fields = ('pk', 'value', 'formField')
@@ -11,10 +13,12 @@ class ListValueSerializer(serializers.ModelSerializer):
 
 class FormFieldSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     values = ListValueSerializer(many=True)
+    formTemplate = serializers.IntegerField(
+        source='formTemplate.id', required=False)
 
     class Meta:
         model = FormField
-        fields = ('pk', 'name', 'fieldType', 'FormTemplate', 'values')
+        fields = ('pk', 'name', 'fieldType', 'formTemplate', 'values')
 
 
 class FormTemplateSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
@@ -32,11 +36,18 @@ class FormFieldValueSerializer(serializers.ModelSerializer):
         source='formField.name', required=False, read_only=True)
     valueAsString = serializers.CharField(
         required=False, read_only=True)
+    form = serializers.IntegerField(source='form.id', required=False)
 
     class Meta:
         model = FormFieldValue
         fields = ('pk', 'form', 'formField', 'stringValue', 'numberValue',
                   'listValue', 'fieldType', 'name', 'valueAsString')
+
+    def validate(self, data):
+        data = super().validate(data)
+        model = FormFieldValue(**data)
+        model.clean()
+        return data
 
 
 class FormSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):

@@ -19,6 +19,7 @@ export default function FormInput(props) {
 
   return (
     <Input
+      maxLength="50"
       disabled={readOnly}
       type={inputType}
       name={name}

@@ -25,6 +25,7 @@ export default function TemplateFieldValueList(props) {
             <tr key={value.pk || valueIndex}>
               <td>
                 <Input
+                  maxLength="30"
                   type="text"
                   name="value"
                   onChange={(e) => {
