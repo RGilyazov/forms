@@ -4,7 +4,7 @@ import TemplateList from "./template/TemplateList";
 import TemplateModal from "./template/TemplateModal";
 import * as APILib from "../api/formApAPI";
 
-export default function FormApp() {
+export default function TemplatesPage() {
   const [state, setState] = useState({
     formTemplates: [],
   });

@@ -17,7 +17,7 @@ export default function FormModal(props) {
 
   const button = (
     <Button className="float-right" onClick={toggle}>
-      fill
+      Fill
     </Button>
   );
 

@@ -2,8 +2,8 @@ import "./App.css";
 import React, { Fragment } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import FormApp from "./components/FormApp";
-import FormList from "./components/form/FormList";
+import TemplatesPage from "./components/TemplatesPage";
+import DataPage from "./components/DataPage";
 
 function App() {
   return (
@@ -11,12 +11,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route exact path="/" element={<FormApp />}></Route>
-          <Route
-            exact
-            path="/data"
-            element={<FormList readOnly={true} />}
-          ></Route>
+          <Route exact path="/" element={<TemplatesPage />}></Route>
+          <Route exact path="/data" element={<DataPage />}></Route>
         </Routes>
       </BrowserRouter>
     </Fragment>
