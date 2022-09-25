@@ -1,11 +1,11 @@
 import React from "react";
-import { Table, Input, Button } from "reactstrap";
+import { Table, Input, Button, FormFeedback } from "reactstrap";
 import TemplateFieldValueListModal from "./fieldValueList/TemplateFieldValueListModal";
 import { FIELD_TYPES } from "../../api/formFunctions";
 
 export default function TemplateFieldList(props) {
   const fields = props.fields;
-  const { addField, delField, fieldOnChange } = props;
+  const { addField, delField, fieldOnChange, errors } = props;
 
   return (
     <Table className="mt-1">
@@ -29,6 +29,7 @@ export default function TemplateFieldList(props) {
             <tr key={field.pk || -index}>
               <td>
                 <Input
+                  invalid={Boolean(errors[index])}
                   type="text"
                   name="name"
                   onChange={(e) => {
@@ -36,6 +37,7 @@ export default function TemplateFieldList(props) {
                   }}
                   value={field.name}
                 />
+                <FormFeedback>{errors[index]}</FormFeedback>
               </td>
               <td>
                 <select

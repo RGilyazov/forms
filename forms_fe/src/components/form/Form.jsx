@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formApAPI";
-import { singleValueToDBValue } from "../../api/formFunctions";
+import { singleValueToDBValue, validateForm } from "../../api/formFunctions";
 
 export default function Form(props) {
   const initialState = {
@@ -19,25 +19,35 @@ export default function Form(props) {
     }),
   };
   const [state, setState] = useState(initialState);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    validateForm(state.values, newErrors);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const createForm = (e) => {
     e.preventDefault();
-    const req = {
-      pk: state.pk,
-      template: state.formTemplate.pk,
-      values: state.values.map((value) => {
-        const dbValue = singleValueToDBValue(value.value, value.fieldType);
-        return {
-          pk: 0,
-          formField: value.field,
-          ...dbValue,
-        };
-      }),
-    };
-    APILib.postForm(req).then(() => {
-      props.resetState();
-      props.toggle();
-    });
+    if (validate()) {
+      const req = {
+        pk: state.pk,
+        template: state.formTemplate.pk,
+        values: state.values.map((value) => {
+          const dbValue = singleValueToDBValue(value.value, value.fieldType);
+          return {
+            pk: 0,
+            formField: value.field,
+            ...dbValue,
+          };
+        }),
+      };
+      APILib.postForm(req).then(() => {
+        props.resetState();
+        props.toggle();
+      });
+    }
   };
 
   const valueOnChange = (index, newValue) => {
@@ -56,6 +66,7 @@ export default function Form(props) {
         <FormFieldValueList
           values={state.values}
           valueOnChange={valueOnChange}
+          errors={errors}
         />
       </FormGroup>
       <Button>Save</Button>

@@ -1,29 +1,48 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  FormFeedback,
+} from "reactstrap";
 import TemplateFieldList from "./TemplateFieldList";
 import * as APILib from "../../api/formApAPI";
+import { validateTemplate } from "../../api/formFunctions";
 
 export default function TemplateForm(props) {
   const initialState = { pk: 0, name: "", fields: [] };
   const [state, setState] = useState(props.formTemplate || initialState);
+  const [errors, setErrors] = useState({ fields: {} });
 
   const nameOnChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const formIsValid = validateTemplate(state, newErrors);
+    setErrors(newErrors);
+    return formIsValid;
+  };
+
   const createFormTemplate = (e) => {
     e.preventDefault();
-    APILib.postFormTemplate(state).then(() => {
-      props.resetState();
-      props.toggle();
-    });
+    if (validateForm())
+      APILib.postFormTemplate(state).then(() => {
+        props.resetState();
+        props.toggle();
+      });
   };
 
   const editFormTemplate = (e) => {
     e.preventDefault();
-    APILib.putFormTemplate(state).then(() => {
-      props.resetState();
-      props.toggle();
-    });
+    if (validateForm())
+      APILib.putFormTemplate(state).then(() => {
+        props.resetState();
+        props.toggle();
+      });
   };
   const defaultIfEmpty = (value) => {
     return value === "" ? "" : value;
@@ -78,7 +97,7 @@ export default function TemplateForm(props) {
       }),
     });
   };
-  const valueOnChange = (fieldIndex, valueIndex, NewValue) => {
+  const valueOnChange = (fieldIndex, valueIndex, newValue) => {
     setState({
       ...state,
       fields: state.fields.map((field, index_) => {
@@ -89,7 +108,7 @@ export default function TemplateForm(props) {
               values: field.values.map((value, valueIndex_) =>
                 valueIndex_ !== valueIndex
                   ? value
-                  : { ...value, value: NewValue }
+                  : { ...value, value: newValue }
               ),
             };
       }),
@@ -101,12 +120,14 @@ export default function TemplateForm(props) {
       <FormGroup>
         <Label for="name">Name:</Label>
         <Input
+          invalid={Boolean(errors.name)}
           type="text"
           name="name"
           maxLength="80"
           onChange={nameOnChange}
           value={defaultIfEmpty(state.name)}
         />
+        <FormFeedback>{errors.name}</FormFeedback>
         <TemplateFieldList
           fields={state.fields}
           addField={addField}
@@ -115,6 +136,7 @@ export default function TemplateForm(props) {
           addValue={addValue}
           delValue={delValue}
           valueOnChange={valueOnChange}
+          errors={errors.fields}
         />
       </FormGroup>
       <Button>Save</Button>
