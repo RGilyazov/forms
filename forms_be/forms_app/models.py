@@ -30,6 +30,9 @@ class validateOnSaveModel(models.Model):
 class FormTemplate(validateOnSaveModel):
     name = models.CharField(max_length=80)
 
+    class Meta:
+        ordering = ['name', ]
+
     def __str__(self) -> str:
         return f'{self.name}'
 
@@ -40,6 +43,9 @@ class FormField(validateOnSaveModel):
     formTemplate = models.ForeignKey(
         FormTemplate,  on_delete=models.CASCADE, related_name='fields')
 
+    class Meta:
+        ordering = ['name', ]
+
     def __str__(self) -> str:
         return f'{self.formTemplate}.{self.name}({self.fieldType})'
 
@@ -48,6 +54,9 @@ class ListValue(validateOnSaveModel):
     formField = models.ForeignKey(
         FormField,  on_delete=models.CASCADE, related_name='values')
     value = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ['value', ]
 
     def __str__(self) -> str:
         return f'{self.value}'
@@ -58,6 +67,9 @@ class Form(validateOnSaveModel):
         FormTemplate,
         on_delete=models.CASCADE,
         related_name='forms')
+
+    class Meta:
+        ordering = ['pk', ]
 
     def __str__(self) -> str:
         return f'{self.template}.{self.id}'
@@ -71,6 +83,9 @@ class FormFieldValue(validateOnSaveModel):
     numberValue = models.FloatField(blank=True, null=True)
     listValue = models.ForeignKey(
         ListValue, blank=True, null=True, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['pk', ]
 
     @property
     def valueAsString(self):

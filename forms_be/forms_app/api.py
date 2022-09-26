@@ -10,7 +10,7 @@ from .serializers import FormTemplateSerializer,FormSerializer
 @csrf_exempt
 def formTemplates(request):
     if request.method == "GET":
-        data = FormTemplate.objects.all()
+        data = FormTemplate.objects.order_by('name')
         serializer = FormTemplateSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)
     elif request.method =="POST":
