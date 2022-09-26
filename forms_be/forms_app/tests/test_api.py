@@ -10,8 +10,8 @@ def create_formTemplate(self):
 
 
 def create_fields(self, formTemplate):
-    for choice in FieldType:
-        formField = FormField(name='field '+choice, fieldType=choice,
+    for ind, choice in enumerate(FieldType):
+        formField = FormField(name=f'field {ind}', fieldType=choice,
                               formTemplate=formTemplate)
         formField.save()
 
@@ -24,23 +24,24 @@ class formTemplates_Get(APITestCase):
         create_fields(self, self.formTemplate)
 
     def testTemplates_get(self):
+        self.maxDiff = None
         api_formTemplates_url = reverse('forms_app:api_formTemplates')
         response = self.client.get(api_formTemplates_url)
         self.assertEqual(response.status_code, 200)
         respData = response.json()
         expectedData = [{'fields': [{'fieldType': 'ST',
                                      'formTemplate': 1,
-                                     'name': 'field ST',
+                                     'name': 'field 0',
                                      'pk': 1,
                                      'values': []},
                                     {'fieldType': 'NU',
                                      'formTemplate': 1,
-                                     'name': 'field NU',
+                                     'name': 'field 1',
                                      'pk': 2,
                                      'values': []},
                                     {'fieldType': 'LS',
                                      'formTemplate': 1,
-                                     'name': 'field LS',
+                                     'name': 'field 2',
                                      'pk': 3,
                                      'values': []}],
                          'name': 'test_template',
