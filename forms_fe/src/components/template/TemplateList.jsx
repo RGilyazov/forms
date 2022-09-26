@@ -1,7 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
 import TemplateModal from "./TemplateModal";
-import ConfirmRemovalModal from "./ConfirmRemovalModal";
 import FormModal from "../form/FormModal";
 
 export default function TemplateList(props) {

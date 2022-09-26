@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row } from "reactstrap";
 import TemplateList from "./template/TemplateList";
 import TemplateModal from "./template/TemplateModal";
 import * as APILib from "../api/formApAPI";
