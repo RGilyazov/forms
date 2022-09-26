@@ -9,7 +9,7 @@ import {
 } from "reactstrap";
 import TemplateFieldList from "./TemplateFieldList";
 import * as APILib from "../../api/formApAPI";
-import { validateTemplate } from "../../api/formFunctions";
+import { validateTemplate } from "../../api/formUtils";
 import ConfirmRemovalModal from "./ConfirmRemovalModal";
 
 export default function TemplateForm(props) {

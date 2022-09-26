@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formApAPI";
-import { singleValueToDBValue, validateForm } from "../../api/formFunctions";
+import { singleValueToDBValue, validateForm } from "../../api/formUtils";
 
 export default function Form(props) {
   const initialState = {

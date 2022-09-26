@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, FormGroup, Label, FormFeedback } from "reactstrap";
-import { FIELD_TYPES } from "../../api/formFunctions";
+import { FIELD_TYPES } from "../../api/formUtils";
 import RadioInput from "./RadioInput";
 
 export default function FormInput(props) {
