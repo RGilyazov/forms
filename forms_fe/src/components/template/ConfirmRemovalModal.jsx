@@ -24,7 +24,7 @@ export default function ConfirmRemovalModal(props) {
   return (
     <Fragment>
       <Button color="danger" onClick={() => toggle()}>
-        Remove
+        Delete
       </Button>
       <Modal isOpen={state.modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>{props.question}</ModalHeader>

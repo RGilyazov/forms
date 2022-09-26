@@ -29,7 +29,10 @@ export function validateForm(formValues, errors) {
     if (value.fieldType === FIELD_TYPES.LS && !value.value) {
       errors[index] = "please select one variant";
     }
-    if (value.fieldType === FIELD_TYPES.NU && !value.value && value !== 0) {
+    if (
+      value.fieldType === FIELD_TYPES.NU &&
+      (isNaN(value.value) || value.value === "")
+    ) {
       errors[index] = "please enter valid number";
     }
   });

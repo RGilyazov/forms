@@ -10,6 +10,7 @@ import {
 import TemplateFieldList from "./TemplateFieldList";
 import * as APILib from "../../api/formApAPI";
 import { validateTemplate } from "../../api/formFunctions";
+import ConfirmRemovalModal from "./ConfirmRemovalModal";
 
 export default function TemplateForm(props) {
   const initialState = { pk: 0, name: "", fields: [] };
@@ -129,18 +130,29 @@ export default function TemplateForm(props) {
           value={defaultIfEmpty(state.name)}
         />
         <FormFeedback>{errors.name}</FormFeedback>
-        <TemplateFieldList
-          fields={state.fields}
-          addField={addField}
-          delField={delField}
-          fieldOnChange={fieldOnChange}
-          addValue={addValue}
-          delValue={delValue}
-          valueOnChange={valueOnChange}
-          errors={errors.fields}
-        />
       </FormGroup>
-      <Button>Save</Button>
+      <TemplateFieldList
+        fields={state.fields}
+        addField={addField}
+        delField={delField}
+        fieldOnChange={fieldOnChange}
+        addValue={addValue}
+        delValue={delValue}
+        valueOnChange={valueOnChange}
+        errors={errors.fields}
+      />
+      <div className="d-flex gap-3">
+        <Button>Save</Button>
+        {props.formTemplate ? (
+          <ConfirmRemovalModal
+            pk={props.formTemplate.pk}
+            question="Do you really want delete the template?"
+            resetState={props.resetState}
+          />
+        ) : (
+          ""
+        )}
+      </div>
     </Form>
   );
 }

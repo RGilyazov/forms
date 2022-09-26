@@ -3,7 +3,7 @@ import { Navbar, Nav, NavItem, NavbarBrand, NavLink } from "reactstrap";
 
 function Header() {
   return (
-    <Navbar color="light" light expand="md">
+    <Navbar color="light" light expand="sm">
       <NavbarBrand href="/">Form APP</NavbarBrand>
       <Nav className="ml-auto flex-grow-1" navbar>
         <NavItem>

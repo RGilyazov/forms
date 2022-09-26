@@ -30,7 +30,12 @@ export default function TemplateModal(props) {
     <Fragment>
       {button}
       <Modal isOpen={state.modal} toggle={toggle} animation="false">
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
+        <ModalHeader
+          toggle={toggle}
+          cssModule={{ "modal-title": "overflow-hidden" }}
+        >
+          {title}
+        </ModalHeader>
 
         <ModalBody>
           <TemplateForm

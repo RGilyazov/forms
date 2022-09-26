@@ -26,20 +26,16 @@ export default function TemplatesPage() {
   };
 
   return (
-    <Container style={{ marginTop: "20px" }}>
-      <Row>
-        <Col>
-          <TemplateList
-            formTemplates={state.formTemplates}
-            resetState={resetState}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+    <div className="d-flex flex-column align-items-center">
+      <div className="d-flex flex-column m-2 w-fit">
+        <TemplateList
+          formTemplates={state.formTemplates}
+          resetState={resetState}
+        />
+        <div className="flex-grow-0 justify-content-center m-2">
           <TemplateModal create={true} resetState={resetState} />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }
