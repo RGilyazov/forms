@@ -16,7 +16,7 @@ export function postFormTemplate(formTemplate: FormAPITypes.FormTemplate) {
 
 export function putFormTemplate(formTemplate: FormAPITypes.FormTemplate) {
   return axios.put(
-    TEMPLATE_API_URL + "/" + formTemplate.pk + "/",
+    TEMPLATE_API_URL + "/" + formTemplate.pk + "/1",
     formTemplate
   );
 }

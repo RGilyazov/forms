@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalHeader, Button, ModalFooter } from "reactstrap";
+import { toast } from "react-toastify";
 
 import * as APILib from "../../api/formAppAPI";
 
@@ -19,10 +20,16 @@ export default function ConfirmRemovalModal(props: {
   };
 
   const deleteFormTemplate = (pk: number) => {
-    APILib.deleteFormTemplate(pk).then(() => {
-      props.resetState();
-      toggle();
-    });
+    APILib.deleteFormTemplate(pk)
+      .then(() => {
+        props.resetState();
+        toggle();
+      })
+      .catch((err) => {
+        toast.error("Unexpected error occurred. Please try again!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      });
   };
 
   return (

@@ -4,6 +4,7 @@ import * as APILib from "../../api/formAppAPI";
 import { FormAPITypes } from "../../api/formAppAPITypes";
 import { dbValueToSingleValue } from "../../utils/formInterfaceUtils";
 import { Spinner } from "reactstrap";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormListProps = { readOnly: boolean };
 
@@ -13,18 +14,34 @@ export default function FormList({ readOnly }: FormListProps) {
   };
   const [state, setState] = useState(initialState);
 
+  const [error, setError] = useState(null);
+
   const getForms = () => {
-    APILib.getForms().then((res) => {
-      setState({
-        forms: res.data,
+    APILib.getForms()
+      .then((res) => {
+        setState({
+          forms: res.data,
+        });
+      })
+      .catch((error) => {
+        setError(error);
       });
-    });
   };
 
   useEffect(() => {
     getForms();
   }, []);
 
+  if (error) {
+    return (
+      <div className="d-flex flex-column align-items-center m-5">
+        <div className="alert alert-danger" role="alert">
+          Error occurred during loading. Try to reload the page.
+        </div>
+        <div> {`${error}`}</div>
+      </div>
+    );
+  }
   if (state.forms === undefined)
     return (
       <div className="d-flex flex-column align-items-center m-5">

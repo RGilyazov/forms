@@ -15,6 +15,7 @@ import {
   ValidateTemplateErrorsType,
 } from "../../utils/formInterfaceUtils";
 import ConfirmRemovalModal from "./ConfirmRemovalModal";
+import { toast } from "react-toastify";
 
 type TemplateFormProps = {
   formTemplate?: FormAPITypes.FormTemplate;
@@ -51,10 +52,16 @@ export default function TemplateForm(props: TemplateFormProps) {
   const editFormTemplate: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (validateForm())
-      APILib.putFormTemplate(state).then(() => {
-        props.resetState();
-        props.toggle();
-      });
+      APILib.putFormTemplate(state)
+        .then(() => {
+          props.resetState();
+          props.toggle();
+        })
+        .catch((err) => {
+          toast.error("Unexpected error occurred. Please try again!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        });
   };
   const defaultIfEmpty = (value: string) => {
     return value === "" ? "" : value;

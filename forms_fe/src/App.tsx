@@ -4,10 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import TemplatesPage from "./components/TemplatesPage";
 import DataPage from "./components/DataPage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <Fragment>
+      <ToastContainer />
       <BrowserRouter>
         <Header />
         <Routes>

@@ -3,7 +3,11 @@ import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formAppAPI";
 import { FormAPITypes } from "../../api/formAppAPITypes";
-import { singleValueToDBValue, validateForm } from "../../utils/formInterfaceUtils";
+import {
+  singleValueToDBValue,
+  validateForm,
+} from "../../utils/formInterfaceUtils";
+import { toast } from "react-toastify";
 
 type FormModalProps = {
   formTemplate: FormAPITypes.FormTemplate;
@@ -51,10 +55,16 @@ export default function Form(props: FormModalProps) {
           };
         }),
       };
-      APILib.postForm(req).then(() => {
-        props.resetState();
-        props.toggle();
-      });
+      APILib.postForm(req)
+        .then(() => {
+          props.resetState();
+          props.toggle();
+        })
+        .catch((err) => {
+          toast.error("Unexpected error occurred. Please try again!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        });
     }
   };
 

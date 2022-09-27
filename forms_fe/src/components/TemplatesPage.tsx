@@ -4,6 +4,7 @@ import TemplateModal from "./template/TemplateModal";
 import * as APILib from "../api/formAppAPI";
 import { FormAPITypes } from "../api/formAppAPITypes";
 import { Spinner } from "reactstrap";
+import ErrorMessage from "./ErrorMessage";
 
 export default function TemplatesPage() {
   const initialState: {
@@ -12,13 +13,18 @@ export default function TemplatesPage() {
     formTemplates: undefined,
   };
   const [state, setState] = useState(initialState);
+  const [error, setError] = useState(null);
 
   const getTemplates = () => {
-    APILib.getFormTemplates().then((res) => {
-      setState({
-        formTemplates: res.data,
+    APILib.getFormTemplates()
+      .then((res) => {
+        setState({
+          formTemplates: res.data,
+        });
+      })
+      .catch((error) => {
+        setError(error);
       });
-    });
   };
 
   useEffect(() => {
@@ -28,7 +34,14 @@ export default function TemplatesPage() {
   const resetState = () => {
     getTemplates();
   };
-
+  if (error) {
+    return (
+      <ErrorMessage
+        error={error}
+        message="Error occurred during loading. Try to reload the page."
+      />
+    );
+  }
   if (state.formTemplates === undefined)
     return (
       <div className="d-flex flex-column align-items-center m-5">
