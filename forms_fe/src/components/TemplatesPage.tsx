@@ -4,9 +4,10 @@ import TemplateModal from "./template/TemplateModal";
 import * as APILib from "../api/formApAPI";
 
 export default function TemplatesPage() {
-  const [state, setState] = useState({
+  const initialState: { formTemplates: APILib.FormAPITypes.FormTemplate[] } = {
     formTemplates: [],
-  });
+  };
+  const [state, setState] = useState(initialState);
 
   const getTemplates = () => {
     APILib.getFormTemplates().then((res) => {

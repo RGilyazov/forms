@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalHeader, Button, ModalFooter } from "reactstrap";
 
-import * as APILib from "../../api/formApAPI";
+import * as APILib from "../../api/formApAPI.ts";
 
 export default function ConfirmRemovalModal(props) {
   const [state, setState] = useState({

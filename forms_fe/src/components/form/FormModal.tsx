@@ -1,8 +1,14 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Form from "./Form";
+import { FormAPITypes } from "../../api/formApAPI";
 
-export default function FormModal(props) {
+type FormModalProps = {
+  formTemplate: FormAPITypes.FormTemplate;
+  resetState: () => {};
+};
+
+export default function FormModal(props: FormModalProps) {
   const [state, setState] = useState({
     modal: false,
   });

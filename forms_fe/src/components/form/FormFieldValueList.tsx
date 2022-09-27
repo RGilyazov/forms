@@ -1,7 +1,14 @@
 import React from "react";
 import FormInput from "./FormInput";
+import { FormUserInterfaceTypes } from "../../utils/formTypes";
 
-export default function FormFieldValueList(props) {
+type FormFieldValueListProps = {
+  readOnly?: boolean;
+  errors?: { [key: string]: string };
+  valueOnChange?: (index: number, value: string) => void;
+  values: FormUserInterfaceTypes.FormValue[];
+};
+export default function FormFieldValueList(props: FormFieldValueListProps) {
   const { values, valueOnChange, readOnly, errors } = props;
 
   return (
@@ -11,7 +18,7 @@ export default function FormFieldValueList(props) {
       ) : (
         values.map((value, index) => (
           <FormInput
-            key={value.pk || -index}
+            key={index}
             readOnly={readOnly}
             name={`value${index}`}
             value={value}

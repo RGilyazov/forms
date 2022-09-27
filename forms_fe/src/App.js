@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { Fragment } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import TemplatesPage from "./components/TemplatesPage";
+import Header from "./components/Header.tsx";
+import TemplatesPage from "./components/TemplatesPage.tsx";
 import DataPage from "./components/DataPage";
 
 function App() {

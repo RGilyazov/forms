@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formApAPI";
-import { singleValueToDBValue, validateForm } from "../../api/formUtils";
+import { FormAPITypes } from "../../api/formApAPI";
+import { singleValueToDBValue, validateForm } from "../../utils/formUtils";
 
-export default function Form(props) {
+type FormModalProps = {
+  formTemplate: FormAPITypes.FormTemplate;
+  toggle: () => void;
+  resetState: () => void;
+};
+export default function Form(props: FormModalProps) {
   const initialState = {
     pk: 0,
     formTemplate: props.formTemplate,
@@ -23,23 +29,25 @@ export default function Form(props) {
 
   const validate = () => {
     const newErrors = {};
-    validateForm(state.values, newErrors);
+    if (state.values.length > 0) validateForm(state.values, newErrors);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const createForm = (e) => {
+  const createForm: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (validate()) {
       const req = {
         pk: state.pk,
         template: state.formTemplate.pk,
+
         values: state.values.map((value) => {
           const dbValue = singleValueToDBValue(value.value, value.fieldType);
           return {
             pk: 0,
             formField: value.field,
             ...dbValue,
+            fieldType: value.fieldType,
           };
         }),
       };
@@ -50,7 +58,7 @@ export default function Form(props) {
     }
   };
 
-  const valueOnChange = (index, newValue) => {
+  const valueOnChange = (index: number, newValue: string) => {
     const newState = {
       ...state,
       values: state.values.map((value, index_) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Input, Button, FormFeedback } from "reactstrap";
 import TemplateFieldValueListModal from "./fieldValueList/TemplateFieldValueListModal";
-import { FIELD_TYPES } from "../../api/formUtils";
+import { FIELD_TYPES } from "../../utils/formUtils";
 
 export default function TemplateFieldList(props) {
   const fields = props.fields;

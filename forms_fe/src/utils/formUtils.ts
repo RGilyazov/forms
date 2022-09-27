@@ -1,6 +1,9 @@
+import { FormAPITypes } from "../api/formApAPI";
+import { FormUserInterfaceTypes } from "./formTypes";
+
 export const FIELD_TYPES = { NU: "NU", LS: "LS", ST: "ST" };
 
-export function dbValueToSingleValue(dbValue) {
+export function dbValueToSingleValue(dbValue: FormAPITypes.DBValue) {
   switch (dbValue.fieldType) {
     case FIELD_TYPES.NU:
       return dbValue.numberValue ? dbValue.numberValue : "";
@@ -13,37 +16,45 @@ export function dbValueToSingleValue(dbValue) {
   }
 }
 
-export function singleValueToDBValue(singleValue, fieldType) {
+export function singleValueToDBValue(
+  singleValue: number | string | null,
+  fieldType: FormAPITypes.FieldType
+) {
   return {
-    stringValue: fieldType === FIELD_TYPES.ST ? singleValue : null,
-    numberValue: fieldType === FIELD_TYPES.NU ? singleValue : null,
-    listValue: fieldType === FIELD_TYPES.LS ? singleValue : null,
+    stringValue: fieldType === FIELD_TYPES.ST ? String(singleValue) : null,
+    numberValue: fieldType === FIELD_TYPES.NU ? Number(singleValue) : null,
+    listValue: fieldType === FIELD_TYPES.LS ? Number(singleValue) : null,
   };
 }
-
-export function validateForm(formValues, errors) {
+export function validateForm(
+  formValues: FormUserInterfaceTypes.FormValue[],
+  errors: { [key: string]: string }
+) {
   formValues.forEach((value, index) => {
     if (value.fieldType === FIELD_TYPES.ST && !value.value) {
-      errors[index] = "please enter at least 1 symbol here";
+      errors[index.toString()] = "please enter at least 1 symbol here";
     }
     if (value.fieldType === FIELD_TYPES.LS && !value.value) {
-      errors[index] = "please select one variant";
+      errors[index.toString()] = "please select one variant";
     }
     if (
       value.fieldType === FIELD_TYPES.NU &&
-      (isNaN(value.value) || value.value === "")
+      (isNaN(Number(value.value)) || value.value === "")
     ) {
-      errors[index] = "please enter valid number";
+      errors[index.toString()] = "please enter valid number";
     }
   });
   return Object.keys(errors).length === 0;
 }
 
-export function validateTemplate(template, errors) {
+export function validateTemplate(
+  template: FormAPITypes.FormTemplate,
+  errors: { [key: string]: string | { [key: string]: string } }
+) {
   if (!template.name) {
     errors.name = "Name should not be empty";
   }
-  errors.fields = {};
+  const fields: { [key: string]: string } = {};
   template.fields.forEach((field, index) => {
     const error = [];
     if (!field.name) {
@@ -55,8 +66,9 @@ export function validateTemplate(template, errors) {
       if (field.values.length > 10)
         error.push(" You can enter maximum 10 variants.");
     }
-    if (error.length > 0) errors.fields[index] = error.join(" ");
+    if (error.length > 0) fields[index.toString()] = error.join(" ");
   });
+  errors.fields = fields;
   return (
     Object.keys(errors).length === 1 && Object.keys(errors.fields).length === 0
   );

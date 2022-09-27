@@ -1,7 +1,16 @@
 import React from "react";
 import { Input, FormGroup, Label, FormFeedback } from "reactstrap";
+import { FormUserInterfaceTypes } from "../../utils/formTypes";
 
-export default function RadioInput(props) {
+type RadioInputProps = {
+  valueOnChange: (index: number, value: number) => void;
+  value: FormUserInterfaceTypes.FormValueWithVariants;
+  index: number;
+  readOnly: boolean;
+  name: string;
+  errorText?: string;
+};
+export default function RadioInput(props: RadioInputProps) {
   const { valueOnChange, value, index, readOnly, name, errorText } = props;
   const invalid = errorText ? true : false;
   return (

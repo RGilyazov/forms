@@ -8,8 +8,8 @@ import {
   FormFeedback,
 } from "reactstrap";
 import TemplateFieldList from "./TemplateFieldList";
-import * as APILib from "../../api/formApAPI";
-import { validateTemplate } from "../../api/formUtils";
+import * as APILib from "../../api/formApAPI.ts";
+import { validateTemplate } from "../../utils/formUtils";
 import ConfirmRemovalModal from "./ConfirmRemovalModal";
 
 export default function TemplateForm(props) {
