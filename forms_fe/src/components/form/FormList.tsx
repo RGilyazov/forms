@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import FormFieldValueList from "./FormFieldValueList";
-import * as APILib from "../../api/formApAPI";
-import { FormAPITypes } from "../../api/formApAPI";
-import { dbValueToSingleValue } from "../../utils/formUtils";
+import * as APILib from "../../api/formAppAPI";
+import { FormAPITypes } from "../../api/formAppAPITypes";
+import { dbValueToSingleValue } from "../../utils/formInterfaceUtils";
 
 type FormListProps = { readOnly: boolean };
 
@@ -30,7 +30,12 @@ export default function FormList({ readOnly }: FormListProps) {
           <FormFieldValueList
             readOnly={readOnly}
             values={form.values.map((value) => {
-              return { ...value, value: dbValueToSingleValue(value) };
+              return {
+                ...value,
+                value: dbValueToSingleValue(value),
+                values: [],
+                name: value.name || "",
+              };
             })}
           ></FormFieldValueList>
         </div>

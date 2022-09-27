@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Form from "./Form";
-import { FormAPITypes } from "../../api/formApAPI";
+import { FormAPITypes } from "../../api/formAppAPITypes";
 
 type FormModalProps = {
   formTemplate: FormAPITypes.FormTemplate;
-  resetState: () => {};
+  resetState: () => void;
 };
 
 export default function FormModal(props: FormModalProps) {

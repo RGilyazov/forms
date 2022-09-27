@@ -8,16 +8,27 @@ import {
   FormFeedback,
 } from "reactstrap";
 import TemplateFieldList from "./TemplateFieldList";
-import * as APILib from "../../api/formApAPI.ts";
-import { validateTemplate } from "../../utils/formUtils";
+import * as APILib from "../../api/formAppAPI";
+import { FormAPITypes } from "../../api/formAppAPITypes";
+import {
+  validateTemplate,
+  ValidateTemplateErrorsType,
+} from "../../utils/formInterfaceUtils";
 import ConfirmRemovalModal from "./ConfirmRemovalModal";
 
-export default function TemplateForm(props) {
+type TemplateFormProps = {
+  formTemplate?: FormAPITypes.FormTemplate;
+  resetState: () => void;
+  toggle: () => void;
+};
+
+export default function TemplateForm(props: TemplateFormProps) {
   const initialState = { pk: 0, name: "", fields: [] };
   const [state, setState] = useState(props.formTemplate || initialState);
-  const [errors, setErrors] = useState({ fields: {} });
+  const initialErrors: ValidateTemplateErrorsType = { fields: {} };
+  const [errors, setErrors] = useState(initialErrors);
 
-  const nameOnChange = (e) => {
+  const nameOnChange = (e: any) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
@@ -28,7 +39,7 @@ export default function TemplateForm(props) {
     return formIsValid;
   };
 
-  const createFormTemplate = (e) => {
+  const createFormTemplate: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (validateForm())
       APILib.postFormTemplate(state).then(() => {
@@ -37,7 +48,7 @@ export default function TemplateForm(props) {
       });
   };
 
-  const editFormTemplate = (e) => {
+  const editFormTemplate: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (validateForm())
       APILib.putFormTemplate(state).then(() => {
@@ -45,22 +56,30 @@ export default function TemplateForm(props) {
         props.toggle();
       });
   };
-  const defaultIfEmpty = (value) => {
+  const defaultIfEmpty = (value: string) => {
     return value === "" ? "" : value;
   };
-  const addField = (e) => {
+  const addField = () => {
+    const newField: FormAPITypes.FormField = {
+      name: "",
+      fieldType: FormAPITypes.FieldType.ST,
+      values: [],
+      pk: 0,
+      formTemplate: props.formTemplate ? props.formTemplate.pk : 0,
+    };
+
     setState({
       ...state,
-      fields: [...state.fields, { name: "", fieldType: "ST", values: [] }],
+      fields: [...state.fields, newField],
     });
   };
-  const delField = (index) => {
+  const delField = (index: number) => {
     setState({
       ...state,
       fields: state.fields.filter((el, index_) => index !== index_),
     });
   };
-  const fieldOnChange = (index, fieldName, value) => {
+  const fieldOnChange = (index: number, fieldName: string, value: string) => {
     const newState = {
       ...state,
       fields: state.fields.map((field, index_) => {
@@ -70,7 +89,7 @@ export default function TemplateForm(props) {
     setState(newState);
   };
 
-  const addValue = (fieldIndex) => {
+  const addValue = (fieldIndex: number) => {
     setState({
       ...state,
       fields: state.fields.map((field, index_) => {
@@ -78,12 +97,15 @@ export default function TemplateForm(props) {
           ? field
           : {
               ...field,
-              values: [...field.values, { value: "", formField: field.pk }],
+              values: [
+                ...field.values,
+                { value: "", formField: field.pk, pk: 0 },
+              ],
             };
       }),
     });
   };
-  const delValue = (fieldIndex, valueIndex) => {
+  const delValue = (fieldIndex: number, valueIndex: number) => {
     setState({
       ...state,
       fields: state.fields.map((field, index_) => {
@@ -98,7 +120,11 @@ export default function TemplateForm(props) {
       }),
     });
   };
-  const valueOnChange = (fieldIndex, valueIndex, newValue) => {
+  const valueOnChange = (
+    fieldIndex: number,
+    valueIndex: number,
+    newValue: string
+  ) => {
     setState({
       ...state,
       fields: state.fields.map((field, index_) => {
@@ -125,11 +151,11 @@ export default function TemplateForm(props) {
           type="text"
           name="name"
           id="name"
-          maxLength="80"
+          maxLength={80}
           onChange={nameOnChange}
           value={defaultIfEmpty(state.name)}
         />
-        <FormFeedback>{errors.name}</FormFeedback>
+        <FormFeedback>{errors.name as String}</FormFeedback>
       </FormGroup>
       <TemplateFieldList
         fields={state.fields}
@@ -139,7 +165,7 @@ export default function TemplateForm(props) {
         addValue={addValue}
         delValue={delValue}
         valueOnChange={valueOnChange}
-        errors={errors.fields}
+        errors={errors.fields as { [key: string]: string }}
       />
       <div className="d-flex gap-3">
         <Button>Save</Button>

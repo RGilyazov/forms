@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import TemplateModal from "../components/template/TemplateModal";
 import axios from "axios";
-import { EXPORT_FOR_TESTING } from "../api/formApAPI";
+import { EXPORT_FOR_TESTING } from "../api/formAppAPI";
 
 jest.mock("axios");
 

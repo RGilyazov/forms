@@ -1,7 +1,23 @@
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
+import { FormAPITypes } from "../../../api/formAppAPITypes";
 
-export default function TemplateFieldValueList(props) {
+type TemplateFieldValueListProps = {
+  values: FormAPITypes.ListValue[];
+  fieldIndex: number;
+  toggle: () => void;
+  addValue: (fieldIndex: number) => void;
+  delValue: (fieldIndex: number, valueIndex: number) => void;
+  valueOnChange: (
+    fieldIndex: number,
+    valueIndex: number,
+    newValue: string
+  ) => void;
+};
+
+export default function TemplateFieldValueList(
+  props: TemplateFieldValueListProps
+) {
   const values = props.values;
   const { addValue, delValue, valueOnChange } = props;
 
@@ -16,7 +32,7 @@ export default function TemplateFieldValueList(props) {
       <tbody>
         {!values || values.length <= 0 ? (
           <tr>
-            <td colSpan="6" align="center">
+            <td colSpan={6} align="center">
               <b>no values added yet</b>
             </td>
           </tr>
@@ -25,7 +41,7 @@ export default function TemplateFieldValueList(props) {
             <tr key={value.pk || valueIndex}>
               <td>
                 <Input
-                  maxLength="30"
+                  maxLength={30}
                   type="text"
                   name="value"
                   onChange={(e) => {

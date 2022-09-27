@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { Fragment } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header.tsx";
-import TemplatesPage from "./components/TemplatesPage.tsx";
+import Header from "./components/Header";
+import TemplatesPage from "./components/TemplatesPage";
 import DataPage from "./components/DataPage";
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route exact path="/" element={<TemplatesPage />}></Route>
-          <Route exact path="/data" element={<DataPage />}></Route>
+          <Route path="/" element={<TemplatesPage />}></Route>
+          <Route path="/data" element={<DataPage />}></Route>
         </Routes>
       </BrowserRouter>
     </Fragment>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
-import * as APILib from "../../api/formApAPI";
-import { FormAPITypes } from "../../api/formApAPI";
-import { singleValueToDBValue, validateForm } from "../../utils/formUtils";
+import * as APILib from "../../api/formAppAPI";
+import { FormAPITypes } from "../../api/formAppAPITypes";
+import { singleValueToDBValue, validateForm } from "../../utils/formInterfaceUtils";
 
 type FormModalProps = {
   formTemplate: FormAPITypes.FormTemplate;

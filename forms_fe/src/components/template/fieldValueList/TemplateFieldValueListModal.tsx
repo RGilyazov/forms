@@ -1,8 +1,23 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import TemplateFieldValueList from "./TemplateFieldValueList";
+import { FormAPITypes } from "../../../api/formAppAPITypes";
 
-export default function TemplateFieldValueListModal(props) {
+type TemplateFieldValueListModalProps = {
+  values: FormAPITypes.ListValue[];
+  fieldIndex: number;
+  addValue: (fieldIndex: number) => void;
+  delValue: (fieldIndex: number, valueIndex: number) => void;
+  valueOnChange: (
+    fieldIndex: number,
+    valueIndex: number,
+    newValue: string
+  ) => void;
+};
+
+export default function TemplateFieldValueListModal(
+  props: TemplateFieldValueListModalProps
+) {
   const [state, setState] = useState({
     modal: false,
   });

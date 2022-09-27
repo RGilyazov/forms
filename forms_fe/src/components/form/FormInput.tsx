@@ -1,9 +1,19 @@
 import React from "react";
 import { Input, FormGroup, Label, FormFeedback } from "reactstrap";
-import { FIELD_TYPES } from "../../utils/formUtils";
+import { FIELD_TYPES } from "../../utils/formInterfaceUtils";
 import RadioInput from "./RadioInput";
+import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 
-export default function FormInput(props) {
+type FormInputProps = {
+  valueOnChange?: (index: number, value: string) => void;
+  value: FormUserInterfaceTypes.FormValueWithVariants;
+  index: number;
+  name: string;
+  readOnly?: boolean;
+  errorText: string;
+};
+
+export default function FormInput(props: FormInputProps) {
   const { valueOnChange, value, index, name, readOnly, errorText } = props;
   let input;
   if (value.fieldType === FIELD_TYPES.LS && !readOnly && value.values)
@@ -13,7 +23,7 @@ export default function FormInput(props) {
         value={value}
         index={index}
         name={name}
-        readOnly={readOnly}
+        readOnly={readOnly || false}
         errorText={errorText}
       />
     );
@@ -22,12 +32,12 @@ export default function FormInput(props) {
     const inputType = value.fieldType === FIELD_TYPES.NU ? "number" : "text";
     input = (
       <Input
-        maxLength="50"
+        maxLength={50}
         disabled={readOnly}
         type={inputType}
         name={name}
         onChange={(e) => {
-          valueOnChange(index, e.target.value);
+          if (valueOnChange) valueOnChange(index, e.target.value);
         }}
         value={value.value}
         invalid={invalid}

@@ -1,5 +1,5 @@
-import { FormAPITypes } from "../api/formApAPI";
-import { FormUserInterfaceTypes } from "./formTypes";
+import { FormAPITypes } from "../api/formAppAPITypes";
+import { FormUserInterfaceTypes } from "./formInterfaceTypes";
 
 export const FIELD_TYPES = { NU: "NU", LS: "LS", ST: "ST" };
 
@@ -47,9 +47,13 @@ export function validateForm(
   return Object.keys(errors).length === 0;
 }
 
+export type ValidateTemplateErrorsType = {
+  [key: string]: string | { [key: string]: string };
+};
+
 export function validateTemplate(
   template: FormAPITypes.FormTemplate,
-  errors: { [key: string]: string | { [key: string]: string } }
+  errors: ValidateTemplateErrorsType
 ) {
   if (!template.name) {
     errors.name = "Name should not be empty";

@@ -1,11 +1,25 @@
 import React from "react";
 import { Table, Input, Button, FormFeedback } from "reactstrap";
 import TemplateFieldValueListModal from "./fieldValueList/TemplateFieldValueListModal";
-import { FIELD_TYPES } from "../../utils/formUtils";
+import { FIELD_TYPES } from "../../utils/formInterfaceUtils";
+import { FormAPITypes } from "../../api/formAppAPITypes";
 
-export default function TemplateFieldList(props) {
-  const fields = props.fields;
-  const { addField, delField, fieldOnChange, errors } = props;
+type TemplateFieldListProps = {
+  fields: FormAPITypes.FormField[];
+  errors: { [key: string]: string };
+  addField: () => void;
+  delField: (index: number) => void;
+  fieldOnChange: (index: number, fieldName: string, value: string) => void;
+  addValue: (fieldIndex: number) => void;
+  delValue: (fieldIndex: number, valueIndex: number) => void;
+  valueOnChange: (
+    fieldIndex: number,
+    valueIndex: number,
+    newValue: string
+  ) => void;
+};
+export default function TemplateFieldList(props: TemplateFieldListProps) {
+  const { fields, addField, delField, fieldOnChange, errors } = props;
 
   return (
     <Table className="mt-1">
@@ -20,7 +34,7 @@ export default function TemplateFieldList(props) {
       <tbody>
         {!fields || fields.length <= 0 ? (
           <tr>
-            <td colSpan="6" align="center">
+            <td colSpan={6} align="center">
               <b>no fields added yet</b>
             </td>
           </tr>
@@ -37,7 +51,7 @@ export default function TemplateFieldList(props) {
                   }}
                   value={field.name}
                 />
-                <FormFeedback>{errors[index]}</FormFeedback>
+                <FormFeedback>{errors[String(index)]}</FormFeedback>
               </td>
               <td>
                 <select

@@ -1,9 +1,13 @@
 import React, { Fragment, useState } from "react";
 import { Modal, ModalHeader, Button, ModalFooter } from "reactstrap";
 
-import * as APILib from "../../api/formApAPI.ts";
+import * as APILib from "../../api/formAppAPI";
 
-export default function ConfirmRemovalModal(props) {
+export default function ConfirmRemovalModal(props: {
+  pk: number;
+  resetState: () => void;
+  question: string;
+}) {
   const [state, setState] = useState({
     modal: false,
   });
@@ -14,7 +18,7 @@ export default function ConfirmRemovalModal(props) {
     }));
   };
 
-  const deleteFormTemplate = (pk) => {
+  const deleteFormTemplate = (pk: number) => {
     APILib.deleteFormTemplate(pk).then(() => {
       props.resetState();
       toggle();

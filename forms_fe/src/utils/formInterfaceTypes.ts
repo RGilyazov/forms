@@ -1,14 +1,14 @@
-import { FormAPITypes } from "../api/formApAPI";
+import { FormAPITypes } from "../api/formAppAPITypes";
 
 export namespace FormUserInterfaceTypes {
   export type FormValue = {
     value: string | number;
     fieldType: FormAPITypes.FieldType;
+    name: string;
   };
 
   export interface FormValueWithVariants
-    extends FormAPITypes.FormValue,
-      FormUserInterfaceTypes.FormValue {
+    extends FormUserInterfaceTypes.FormValue {
     values: FormAPITypes.ListValue[];
   }
 }

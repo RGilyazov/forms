@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TemplateList from "./template/TemplateList";
 import TemplateModal from "./template/TemplateModal";
-import * as APILib from "../api/formApAPI";
+import * as APILib from "../api/formAppAPI";
+import { FormAPITypes } from "../api/formAppAPITypes";
 
 export default function TemplatesPage() {
-  const initialState: { formTemplates: APILib.FormAPITypes.FormTemplate[] } = {
+  const initialState: { formTemplates: FormAPITypes.FormTemplate[] } = {
     formTemplates: [],
   };
   const [state, setState] = useState(initialState);

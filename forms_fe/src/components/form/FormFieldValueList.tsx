@@ -1,12 +1,12 @@
 import React from "react";
 import FormInput from "./FormInput";
-import { FormUserInterfaceTypes } from "../../utils/formTypes";
+import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 
 type FormFieldValueListProps = {
   readOnly?: boolean;
   errors?: { [key: string]: string };
   valueOnChange?: (index: number, value: string) => void;
-  values: FormUserInterfaceTypes.FormValue[];
+  values: FormUserInterfaceTypes.FormValueWithVariants[];
 };
 export default function FormFieldValueList(props: FormFieldValueListProps) {
   const { values, valueOnChange, readOnly, errors } = props;
@@ -24,7 +24,7 @@ export default function FormFieldValueList(props: FormFieldValueListProps) {
             value={value}
             index={index}
             valueOnChange={valueOnChange}
-            errorText={errors && errors[index]}
+            errorText={(errors && errors[index]) || ""}
           />
         ))
       )}

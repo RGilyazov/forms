@@ -1,8 +1,14 @@
 import React, { Fragment, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import TemplateForm from "./TemplateForm";
+import { FormAPITypes } from "../../api/formAppAPITypes";
+type TemplateModalProps = {
+  resetState: () => void;
+  create: boolean;
+  formTemplate?: FormAPITypes.FormTemplate;
+};
 
-export default function TemplateModal(props) {
+export default function TemplateModal(props: TemplateModalProps) {
   const [state, setState] = useState({
     modal: false,
   });
@@ -22,7 +28,7 @@ export default function TemplateModal(props) {
     </Button>
   );
   if (!create) {
-    title = `Editing template <${props.formTemplate.name}>`;
+    title = `Editing template <${props.formTemplate?.name}>`;
     button = <Button onClick={toggle}>Edit</Button>;
   }
 
