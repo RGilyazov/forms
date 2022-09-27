@@ -3,11 +3,14 @@ import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formAppAPI";
 import { FormAPITypes } from "../../api/formAppAPITypes";
 import { dbValueToSingleValue } from "../../utils/formInterfaceUtils";
+import { Spinner } from "reactstrap";
 
 type FormListProps = { readOnly: boolean };
 
 export default function FormList({ readOnly }: FormListProps) {
-  const initialState: { forms: FormAPITypes.Form[] } = { forms: [] };
+  const initialState: { forms: FormAPITypes.Form[] | undefined } = {
+    forms: undefined,
+  };
   const [state, setState] = useState(initialState);
 
   const getForms = () => {
@@ -21,6 +24,14 @@ export default function FormList({ readOnly }: FormListProps) {
   useEffect(() => {
     getForms();
   }, []);
+
+  if (state.forms === undefined)
+    return (
+      <div className="d-flex flex-column align-items-center m-5">
+        <Spinner></Spinner>
+        Loading...
+      </div>
+    );
 
   return (
     <div style={{ marginTop: "20px" }}>

@@ -3,10 +3,13 @@ import TemplateList from "./template/TemplateList";
 import TemplateModal from "./template/TemplateModal";
 import * as APILib from "../api/formAppAPI";
 import { FormAPITypes } from "../api/formAppAPITypes";
+import { Spinner } from "reactstrap";
 
 export default function TemplatesPage() {
-  const initialState: { formTemplates: FormAPITypes.FormTemplate[] } = {
-    formTemplates: [],
+  const initialState: {
+    formTemplates: FormAPITypes.FormTemplate[] | undefined;
+  } = {
+    formTemplates: undefined,
   };
   const [state, setState] = useState(initialState);
 
@@ -25,6 +28,14 @@ export default function TemplatesPage() {
   const resetState = () => {
     getTemplates();
   };
+
+  if (state.formTemplates === undefined)
+    return (
+      <div className="d-flex flex-column align-items-center m-5">
+        <Spinner></Spinner>
+        Loading...
+      </div>
+    );
 
   return (
     <div className="d-flex flex-column align-items-center">
