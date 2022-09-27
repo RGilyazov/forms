@@ -1,15 +1,13 @@
 import { FormAPITypes } from "../api/formAppAPITypes";
 import { FormUserInterfaceTypes } from "./formInterfaceTypes";
 
-export const FIELD_TYPES = { NU: "NU", LS: "LS", ST: "ST" };
-
 export function dbValueToSingleValue(dbValue: FormAPITypes.DBValue) {
   switch (dbValue.fieldType) {
-    case FIELD_TYPES.NU:
+    case FormAPITypes.FieldType.NU:
       return dbValue.numberValue ? dbValue.numberValue : "";
-    case FIELD_TYPES.LS:
+    case FormAPITypes.FieldType.LS:
       return dbValue.valueAsString ? dbValue.valueAsString : "";
-    case FIELD_TYPES.ST:
+    case FormAPITypes.FieldType.ST:
       return dbValue.stringValue ? dbValue.stringValue : "";
     default:
       throw new Error(`unknown fieldType ${dbValue.fieldType}`);
@@ -21,9 +19,12 @@ export function singleValueToDBValue(
   fieldType: FormAPITypes.FieldType
 ) {
   return {
-    stringValue: fieldType === FIELD_TYPES.ST ? String(singleValue) : null,
-    numberValue: fieldType === FIELD_TYPES.NU ? Number(singleValue) : null,
-    listValue: fieldType === FIELD_TYPES.LS ? Number(singleValue) : null,
+    stringValue:
+      fieldType === FormAPITypes.FieldType.ST ? String(singleValue) : null,
+    numberValue:
+      fieldType === FormAPITypes.FieldType.NU ? Number(singleValue) : null,
+    listValue:
+      fieldType === FormAPITypes.FieldType.LS ? Number(singleValue) : null,
   };
 }
 export function validateForm(
@@ -31,14 +32,14 @@ export function validateForm(
   errors: { [key: string]: string }
 ) {
   formValues.forEach((value, index) => {
-    if (value.fieldType === FIELD_TYPES.ST && !value.value) {
+    if (value.fieldType === FormAPITypes.FieldType.ST && !value.value) {
       errors[index.toString()] = "please enter at least 1 symbol here";
     }
-    if (value.fieldType === FIELD_TYPES.LS && !value.value) {
+    if (value.fieldType === FormAPITypes.FieldType.LS && !value.value) {
       errors[index.toString()] = "please select one variant";
     }
     if (
-      value.fieldType === FIELD_TYPES.NU &&
+      value.fieldType === FormAPITypes.FieldType.NU &&
       (isNaN(Number(value.value)) || value.value === "")
     ) {
       errors[index.toString()] = "please enter valid number";
@@ -64,7 +65,7 @@ export function validateTemplate(
     if (!field.name) {
       error.push("Field name should not be empty.");
     }
-    if (field.fieldType === FIELD_TYPES.LS) {
+    if (field.fieldType === FormAPITypes.FieldType.LS) {
       if (field.values.length < 3)
         error.push("You need to enter at least 3 variants.");
       if (field.values.length > 10)

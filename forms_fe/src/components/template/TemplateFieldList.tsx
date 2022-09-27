@@ -1,7 +1,6 @@
 import React from "react";
 import { Table, Input, Button, FormFeedback } from "reactstrap";
 import TemplateFieldValueListModal from "./fieldValueList/TemplateFieldValueListModal";
-import { FIELD_TYPES } from "../../utils/formInterfaceUtils";
 import { FormAPITypes } from "../../api/formAppAPITypes";
 
 type TemplateFieldListProps = {
@@ -62,13 +61,13 @@ export default function TemplateFieldList(props: TemplateFieldListProps) {
                     fieldOnChange(index, e.target.name, e.target.value);
                   }}
                 >
-                  <option value={FIELD_TYPES.ST}>string</option>
-                  <option value={FIELD_TYPES.NU}>number</option>
-                  <option value={FIELD_TYPES.LS}>list</option>
+                  <option value={FormAPITypes.FieldType.ST}>string</option>
+                  <option value={FormAPITypes.FieldType.NU}>number</option>
+                  <option value={FormAPITypes.FieldType.LS}>list</option>
                 </select>
               </td>
               <td>
-                {field.fieldType === FIELD_TYPES.LS ? (
+                {field.fieldType === FormAPITypes.FieldType.LS ? (
                   <TemplateFieldValueListModal
                     fieldIndex={index}
                     values={field.values}

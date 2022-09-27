@@ -1,8 +1,8 @@
 import React from "react";
 import { Input, FormGroup, Label, FormFeedback } from "reactstrap";
-import { FIELD_TYPES } from "../../utils/formInterfaceUtils";
 import RadioInput from "./RadioInput";
 import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
+import { FormAPITypes } from "../../api/formAppAPITypes";
 
 type FormInputProps = {
   valueOnChange?: (index: number, value: string | number) => void;
@@ -16,7 +16,11 @@ type FormInputProps = {
 export default function FormInput(props: FormInputProps) {
   const { valueOnChange, value, index, name, readOnly, errorText } = props;
   let input;
-  if (value.fieldType === FIELD_TYPES.LS && !readOnly && value.values)
+  if (
+    value.fieldType === FormAPITypes.FieldType.LS &&
+    !readOnly &&
+    value.values
+  )
     input = (
       <RadioInput
         valueOnChange={valueOnChange}
@@ -29,7 +33,8 @@ export default function FormInput(props: FormInputProps) {
     );
   else {
     const invalid = errorText ? true : false;
-    const inputType = value.fieldType === FIELD_TYPES.NU ? "number" : "text";
+    const inputType =
+      value.fieldType === FormAPITypes.FieldType.NU ? "number" : "text";
     input = (
       <Input
         maxLength={50}
