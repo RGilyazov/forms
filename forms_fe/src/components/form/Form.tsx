@@ -16,7 +16,6 @@ type FormModalProps = {
   resetState: () => void;
 };
 export default function Form(props: FormModalProps) {
-  const defaultFieldValue: string | number = 0;
   const initialState: {
     pk: number;
     formTemplate: FormAPITypes.FormTemplate;
@@ -26,7 +25,7 @@ export default function Form(props: FormModalProps) {
     formTemplate: props.formTemplate,
     values: props.formTemplate.fields.map((field) => {
       return {
-        value: defaultFieldValue,
+        value: "",
         field: field.pk,
         fieldType: field.fieldType,
         name: field.name,
