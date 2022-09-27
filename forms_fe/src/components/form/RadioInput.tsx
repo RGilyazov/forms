@@ -3,7 +3,7 @@ import { Input, FormGroup, Label, FormFeedback } from "reactstrap";
 import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 
 type RadioInputProps = {
-  valueOnChange?: (index: number, value: string) => void;
+  valueOnChange?: (index: number, value: string | number) => void;
   value: FormUserInterfaceTypes.FormValueWithVariants;
   index: number;
   readOnly: boolean;
@@ -26,7 +26,8 @@ export default function RadioInput(props: RadioInputProps) {
               value={cValue.pk}
               name={`radio${index}`}
               onChange={(e) => {
-                if (valueOnChange) valueOnChange(index, e.target.value);
+                if (valueOnChange)
+                  valueOnChange(index, parseInt(e.target.value));
               }}
             />
             {cValue.value}

@@ -5,7 +5,7 @@ import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 type FormFieldValueListProps = {
   readOnly?: boolean;
   errors?: { [key: string]: string };
-  valueOnChange?: (index: number, value: string) => void;
+  valueOnChange?: (index: number, value: string | number) => void;
   values: FormUserInterfaceTypes.FormValueWithVariants[];
 };
 export default function FormFieldValueList(props: FormFieldValueListProps) {

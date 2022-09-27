@@ -5,7 +5,7 @@ import RadioInput from "./RadioInput";
 import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 
 type FormInputProps = {
-  valueOnChange?: (index: number, value: string) => void;
+  valueOnChange?: (index: number, value: string | number) => void;
   value: FormUserInterfaceTypes.FormValueWithVariants;
   index: number;
   name: string;

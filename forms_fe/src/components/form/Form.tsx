@@ -3,6 +3,7 @@ import { Button, Form as BootstrapForm, FormGroup } from "reactstrap";
 import FormFieldValueList from "./FormFieldValueList";
 import * as APILib from "../../api/formAppAPI";
 import { FormAPITypes } from "../../api/formAppAPITypes";
+import { FormUserInterfaceTypes } from "../../utils/formInterfaceTypes";
 import {
   singleValueToDBValue,
   validateForm,
@@ -15,12 +16,17 @@ type FormModalProps = {
   resetState: () => void;
 };
 export default function Form(props: FormModalProps) {
-  const initialState = {
+  const defaultFieldValue: string | number = 0;
+  const initialState: {
+    pk: number;
+    formTemplate: FormAPITypes.FormTemplate;
+    values: FormUserInterfaceTypes.FormValueWithVariants[];
+  } = {
     pk: 0,
     formTemplate: props.formTemplate,
     values: props.formTemplate.fields.map((field) => {
       return {
-        value: "",
+        value: defaultFieldValue,
         field: field.pk,
         fieldType: field.fieldType,
         name: field.name,
@@ -49,7 +55,7 @@ export default function Form(props: FormModalProps) {
           const dbValue = singleValueToDBValue(value.value, value.fieldType);
           return {
             pk: 0,
-            formField: value.field,
+            formField: Number(value.field),
             ...dbValue,
             fieldType: value.fieldType,
           };
@@ -68,7 +74,7 @@ export default function Form(props: FormModalProps) {
     }
   };
 
-  const valueOnChange = (index: number, newValue: string) => {
+  const valueOnChange = (index: number, newValue: string | number) => {
     const newState = {
       ...state,
       values: state.values.map((value, index_) => {

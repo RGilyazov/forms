@@ -10,5 +10,6 @@ export namespace FormUserInterfaceTypes {
   export interface FormValueWithVariants
     extends FormUserInterfaceTypes.FormValue {
     values: FormAPITypes.ListValue[];
+    field?: number;
   }
 }
