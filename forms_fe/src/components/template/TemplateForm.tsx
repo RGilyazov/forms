@@ -40,32 +40,26 @@ export default function TemplateForm(props: TemplateFormProps) {
     return formIsValid;
   };
 
-  const createFormTemplate: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    if (validateForm())
-      APILib.postFormTemplate(state).then(() => {
-        props.resetState();
-        props.toggle();
-      });
+  const getHandler = (
+    APIfunction: (formTemplate: FormAPITypes.FormTemplate) => Promise<any>
+  ) => {
+    const handler: React.FormEventHandler<HTMLFormElement> = (e) => {
+      e.preventDefault();
+      if (validateForm())
+        APIfunction(state)
+          .then(() => {
+            props.resetState();
+            props.toggle();
+          })
+          .catch((err) => {
+            toast.error("Unexpected error occurred. Please try again!", {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+          });
+    };
+    return handler;
   };
 
-  const editFormTemplate: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    if (validateForm())
-      APILib.putFormTemplate(state)
-        .then(() => {
-          props.resetState();
-          props.toggle();
-        })
-        .catch((err) => {
-          toast.error("Unexpected error occurred. Please try again!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
-        });
-  };
-  const defaultIfEmpty = (value: string) => {
-    return value === "" ? "" : value;
-  };
   const addField = () => {
     const newField: FormAPITypes.FormField = {
       name: "",
@@ -150,7 +144,13 @@ export default function TemplateForm(props: TemplateFormProps) {
   };
 
   return (
-    <Form onSubmit={props.formTemplate ? editFormTemplate : createFormTemplate}>
+    <Form
+      onSubmit={
+        props.formTemplate
+          ? getHandler(APILib.putFormTemplate)
+          : getHandler(APILib.postFormTemplate)
+      }
+    >
       <FormGroup>
         <Label for="name">Name:</Label>
         <Input
@@ -160,7 +160,7 @@ export default function TemplateForm(props: TemplateFormProps) {
           id="name"
           maxLength={80}
           onChange={nameOnChange}
-          value={defaultIfEmpty(state.name)}
+          value={state.name}
         />
         <FormFeedback>{errors.name as String}</FormFeedback>
       </FormGroup>
